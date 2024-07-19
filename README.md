@@ -1,5 +1,5 @@
 ## Aquasense AI <br>
-
+Discover Aquasense AI: your gateway to transformative technology for public health and environmental sustainability across Africa. Powered by AI, Aquasense is a pioneering conversational platform designed to revolutionize water management<br>
 ### Structure
 Welcome to the Aquasense AI! Here’s how it's structured:<br>
 `backend/`: Contains Python-based backend code using Flask, encompassing API endpoints, database models, and business logic.<br>
