@@ -1,6 +1,12 @@
 ## Aquasense AI <br>
 ### Problem Being Addressed<br>
 Africa faces significant challenges with improper waste disposal and water shortages. Improper waste disposal in Nigeria has led to health concerns such as increased cases of diarrhea, particularly in cities like Odukpani and Akamkpa. This also contributes to environmental degradation and biodiversity loss as animals ingest plastics. In Giyani, South Africa, severe water shortages force residents to travel long distances to collect water from shared sources with animals, exacerbated by delays and budget overruns in water infrastructure projects like the Giyani Water Project.<br>
+### Structure<br>
+This repository is structured as follows:<br>
+- `backend/`: This directory contains the backend code of the Aquasense AI, including the API endpoints, database models, and business logic implemented in Python using the Flask framework.<br>
+- `frontend/`: Here, you will find the frontend code for the Aquasense AI, implemented using JavaScript, React, and Redux. This directory also includes the HTML, CSS, and JavaScript files for the user interface.<br>
+- `models/`: This directory contains the trained Generative AI models used by Aquasense AI to enhance the platform's capabilities. The models are implemented using Python-based AI/ML libraries, and they play a crucial role in solving specific problems such as visual question answering (VQA).<br>
+- `bot/`: This directory contains the source code for the telegram bot to make it usable from within telegram groups or chat with the telegram bot.<br>
 
 ### Proposed Solution <br>
 Aquasense AI proposes a unified system utilizing AI, IoT sensors, and machine learning to address these challenges:
