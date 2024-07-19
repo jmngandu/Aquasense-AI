@@ -23,7 +23,7 @@ Waste Detection: Solid Waste De<br>partments in Malawi, dealing with challenges 
 Water Shortage Detection: Local authorities in Giyani, South Africa, grappling with ongoing water scarcity issues.<br>
 ### Monetization Strategies <br>
 Waste Detection: Monthly subscription fee of $100 for access to the waste detection and reporting system.<br>
-Water Shortage Detection: Subscription-based model for real-time m<br>onitoring and data analysis services, tailored to local authorities and governments.
+Water Shortage Detection: Subscription-based model for real-time monitoring and data analysis services, tailored to local authorities and governments.
 Challenges <br>
 Waste Detection: Requires substantial datasets, annotation efforts, and high-performance GPUs for AI model training.<br>
 Water Shortage Detection: Challenges include deploying IoT sensors in remote areas while ensuring data accuracy and reliability.<br>
