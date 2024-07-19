@@ -1,4 +1,4 @@
-Aquasense AI
+## Aquasense AI <br>
 Problem Being Addressed
 Africa faces significant challenges with improper waste disposal and water shortages. Improper waste disposal in Nigeria has led to health concerns such as increased cases of diarrhea, particularly in cities like Odukpani and Akamkpa. This also contributes to environmental degradation and biodiversity loss as animals ingest plastics. In Giyani, South Africa, severe water shortages force residents to travel long distances to collect water from shared sources with animals, exacerbated by delays and budget overruns in water infrastructure projects like the Giyani Water Project.
 
