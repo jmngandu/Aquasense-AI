@@ -2,7 +2,9 @@ from flask_restful import Resource
 from flask import request
 from config.extensions import db
 from models.user import User, Responsible
-from utils.helpers import hash_password , verify_password, generate_token, token_required
+from sqlalchemy.orm import joinedload
+from utils.helpers import (hash_password , verify_password, generate_token, token_required,generate_responsible_token,
+                           token_responsible_required)
 
 class Register(Resource):
     def post(self):
@@ -90,7 +92,9 @@ class RegisterResponsible(Resource):
             data = request.get_json()
             if any(attr not in data for attr in ['username', 'email', 'password', 'activity_type', 'activity_domain']):
                 return {'error': 'All attributes are required'}, 400
-            
+            responsible_exist = Responsible.query.filter_by(email=data.get('email')).first()
+            if responsible_exist:
+                return {'error': 'Another responsible already has this email account'}, 401
             hashed_password = hash_password(data['password'])
 
             new_responsible = Responsible(
@@ -100,6 +104,7 @@ class RegisterResponsible(Resource):
                 activity_type=data['activity_type'],
                 activity_domain=data['activity_domain'],
                 description=data.get('description', ''),
+                id_subscription=data.get('id_subscription')
             )
             db.session.add(new_responsible)
             db.session.commit()
@@ -109,27 +114,26 @@ class RegisterResponsible(Resource):
             return {'error': 'External error'}, 400
 
 class ResponsibleProfile(Resource):
-    @token_required
+    @token_responsible_required
     def get(self):
         try:
-            user_id = request.user_info['user_id']
-            responsible = Responsible.query.get(user_id)
-            user_responsible = User.query.get(user_id)
+            print("Token validation started")
+            id_responsible = request.user_info['user_id']
+            responsible = Responsible.query.get(id_responsible)
             if responsible:
                 return {
-                    'id_user':responsible.id_user,
+                    'id_responsible': responsible.id_responsible,
                     'username': responsible.username,
                     'email': responsible.email,
                     'activity_type': responsible.activity_type,
                     'activity_domain': responsible.activity_domain,
                     'description': responsible.description,
                     'is_activated': responsible.is_activated,
-                    'last_subscription': responsible.last_subscription,
-                    'score':user_responsible.score
-                }
+                    'last_subscription': responsible.last_subscription.strftime("%Y-%m-%d %H:%M:%S") if responsible.last_subscription else None
+                }, 200
             return {'message': 'Responsible not found'}, 404
         except Exception as e:
-            print(e)
+            print(f"Exception: {e}")
             return {'error': 'External error'}, 400
         
     @token_required
@@ -163,7 +167,7 @@ class LoginResponsible(Resource):
             
             responsible = Responsible.query.filter_by(email=data['email']).first()
             if responsible and verify_password(data['password'], responsible.password_hash):
-                token = generate_token(responsible.id_user)
+                token = generate_responsible_token(responsible.id_responsible)
                 return {'message': 'Login successful', 'token': token}, 200
             return {'message': 'Invalid credentials'}, 401
         except Exception as e:

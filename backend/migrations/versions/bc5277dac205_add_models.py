@@ -1,8 +1,8 @@
 """add models
 
-Revision ID: 4f14a3ef1789
+Revision ID: bc5277dac205
 Revises: 
-Create Date: 2024-07-20 11:33:38.543103
+Create Date: 2024-07-20 14:00:50.146603
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4f14a3ef1789'
+revision = 'bc5277dac205'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -63,7 +63,12 @@ def upgrade():
     sa.PrimaryKeyConstraint('id_water_shortage')
     )
     op.create_table('responsible',
-    sa.Column('id_user', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=150), nullable=False),
+    sa.Column('profile', sa.String(length=255), nullable=True),
+    sa.Column('email', sa.String(length=120), nullable=False),
+    sa.Column('password_hash', sa.String(length=255), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('id_responsible', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('id_subscription', sa.Integer(), nullable=True),
     sa.Column('is_activated', sa.Boolean(), nullable=True),
     sa.Column('activity_type', sa.String(length=100), nullable=False),
@@ -71,8 +76,9 @@ def upgrade():
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('last_subscription', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['id_subscription'], ['subscription.id_subscription'], ),
-    sa.ForeignKeyConstraint(['id_user'], ['user.id_user'], ),
-    sa.PrimaryKeyConstraint('id_user')
+    sa.PrimaryKeyConstraint('id_responsible'),
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('username')
     )
     op.create_table('waste',
     sa.Column('longitude', sa.Float(), nullable=False),
@@ -89,7 +95,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('waste_id', sa.Integer(), nullable=False),
     sa.Column('responsible_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_user'], ),
+    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['waste_id'], ['waste.id_waste'], ),
     sa.PrimaryKeyConstraint('id', 'waste_id', 'responsible_id')
     )
@@ -99,7 +105,7 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('id_responsible', sa.Integer(), nullable=True),
     sa.Column('id_waste', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['id_responsible'], ['responsible.id_user'], ),
+    sa.ForeignKeyConstraint(['id_responsible'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['id_waste'], ['waste.id_waste'], ),
     sa.PrimaryKeyConstraint('id_notification')
     )
@@ -107,7 +113,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('water_shortage_id', sa.Integer(), nullable=False),
     sa.Column('responsible_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_user'], ),
+    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['water_shortage_id'], ['water_shortage.id_water_shortage'], ),
     sa.PrimaryKeyConstraint('id', 'water_shortage_id', 'responsible_id')
     )
@@ -117,41 +123,41 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('id_responsible', sa.Integer(), nullable=True),
     sa.Column('id_water_shortage', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['id_responsible'], ['responsible.id_user'], ),
+    sa.ForeignKeyConstraint(['id_responsible'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['id_water_shortage'], ['water_shortage.id_water_shortage'], ),
     sa.PrimaryKeyConstraint('id_notification')
     )
     op.create_table('waste_notification_receivers',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('waste_notification_id', sa.Integer(), nullable=False),
-    sa.Column('responsible_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_user'], ),
+    sa.Column('waste_notification_id', sa.Integer(), nullable=True),
+    sa.Column('responsible_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['waste_notification_id'], ['waste_notification.id_notification'], ),
-    sa.PrimaryKeyConstraint('id', 'waste_notification_id', 'responsible_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('waste_notification_views',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('waste_notification_id', sa.Integer(), nullable=False),
-    sa.Column('responsible_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_user'], ),
+    sa.Column('waste_notification_id', sa.Integer(), nullable=True),
+    sa.Column('responsible_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['waste_notification_id'], ['waste_notification.id_notification'], ),
-    sa.PrimaryKeyConstraint('id', 'waste_notification_id', 'responsible_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('water_shortage_notification_receivers',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('water_shortage_notification_id', sa.Integer(), nullable=False),
-    sa.Column('responsible_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_user'], ),
+    sa.Column('water_shortage_notification_id', sa.Integer(), nullable=True),
+    sa.Column('responsible_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['water_shortage_notification_id'], ['water_shortage_notification.id_notification'], ),
-    sa.PrimaryKeyConstraint('id', 'water_shortage_notification_id', 'responsible_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('water_shortage_notification_views',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('water_shortage_notification_id', sa.Integer(), nullable=False),
-    sa.Column('responsible_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_user'], ),
+    sa.Column('water_shortage_notification_id', sa.Integer(), nullable=True),
+    sa.Column('responsible_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['responsible_id'], ['responsible.id_responsible'], ),
     sa.ForeignKeyConstraint(['water_shortage_notification_id'], ['water_shortage_notification.id_notification'], ),
-    sa.PrimaryKeyConstraint('id', 'water_shortage_notification_id', 'responsible_id')
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 

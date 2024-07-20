@@ -22,7 +22,8 @@ def route_dashboard(api):
 
 def route_waste_and_water_shortage(api):
     api.add_resource(PostWasteImage, '/api/waste/post_image', endpoint='post_waste_image')  # POST
-    api.add_resource(ListUnreadNotifications, '/api/notifications/unread/<int:responsible_id>', endpoint='list_unread_notifications')  # GET
+    api.add_resource(ListReceivedNotifications, '/api/notifications/received', endpoint='list_received_notifications')  # GET
+    api.add_resource(ListUnreadNotifications, '/api/notifications/unread', endpoint='list_unread_notifications')  #   # GET
     api.add_resource(ListUncheckedWaste, '/api/waste/unchecked', endpoint='list_unchecked_waste')  # GET
     api.add_resource(WasteDetails, '/api/waste/details/<int:waste_id>', endpoint='waste_details')  # GET
     api.add_resource(CheckWasteAction, '/api/waste/check/<int:waste_id>', endpoint='check_waste_action')  # PUT

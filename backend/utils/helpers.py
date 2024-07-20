@@ -4,7 +4,7 @@ import datetime
 from flask import current_app
 from flask import request, jsonify
 from functools import wraps
-from models.user import User
+from models.user import User,Responsible
 from models.dashboard import SuperAdmin
 
 def generate_token(user_id, is_simple_user=True, is_superuser=False):
@@ -23,6 +23,8 @@ def generate_token(user_id, is_simple_user=True, is_superuser=False):
         print(e)
         return None
     
+def generate_responsible_token(user_id):
+    return generate_token(user_id,is_simple_user=False,is_superuser=False)
 
 def generate_admin_token(user_id, is_superuser=True):
     return generate_token(user_id, is_simple_user=False, is_superuser=is_superuser)
@@ -49,14 +51,40 @@ def token_required(f):
     def decorator(*args, **kwargs):
         token = request.headers.get('Authorization')
         token = token.replace('Bearer ', '')
+        print(token)
         if not token:
             return jsonify({'error': 'Token is missing'}), 401
         
         payload = verify_token(token)
         if 'error' in payload:
-            return jsonify(payload), 401
+            return {'error':'token invalid or expired'}, 401
         
         user = User.query.get(payload['user_id'])
+        if not user:
+            return jsonify({'error': 'User not found'}), 401
+        
+        request.user_info = {
+            "user_id":payload['user_id'],
+            "is_simple_user":payload['is_simple_user']
+        }
+        return f(*args, **kwargs)
+    
+    return decorator
+
+def token_responsible_required(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        token = token.replace('Bearer ', '')
+        print(token)
+        if not token:
+            return jsonify({'error': 'Token is missing'}), 401
+        
+        payload = verify_token(token)
+        if 'error' in payload:
+            return {'error':'token invalid or expired'}, 401
+        
+        user = Responsible.query.get(payload['user_id'])
         if not user:
             return jsonify({'error': 'User not found'}), 401
         
@@ -77,8 +105,9 @@ def token_superadmin_required(f):
             return jsonify({'error': 'Token is missing'}), 401
         
         payload = verify_token(token)
+        print(payload)
         if 'error' in payload:
-            return jsonify(payload), 401
+            return {'error':'token invalid or expired'}, 401
         
         superadmin = SuperAdmin.query.get(payload['user_id'])
         if not superadmin:
@@ -91,6 +120,11 @@ def token_superadmin_required(f):
             "user_id": payload['user_id'],
             "is_superuser": payload['is_superuser']
         }
+        print(request.user_info)
         return f(*args, **kwargs)
     
     return decorator
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

@@ -1,34 +1,55 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, current_app
 from config.extensions import db
 from models.wastewatershortage import *
 from models.notifications import *
 from models.user import Responsible, User
-from utils.helpers import token_required
+from utils.helpers import token_required,allowed_file
+from werkzeug.utils import secure_filename
+import os
 
 class PostWasteImage(Resource):
     @token_required
     def post(self):
         try:
-            data = request.get_json()
-            new_waste = Waste(
-                image_waste=data['image_waste'],
-                longitude=data['longitude'],
-                latitude=data['latitude'],
-                id_user=data['id_user']
-            )
-            db.session.add(new_waste)
-            db.session.commit()
+            #request.data = ['longitude', 'latitude']
+            #request.files = ['file']
+            user_id = request.user_info['user_id']
+            print(request.files)
+            if 'file' not in request.files:
+                return {'error': 'No file part'}, 400
+            file = request.files['file']
+            if file.filename == '':
+                return {'error': 'No selected file'}, 400
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(current_app.config['WASTE_FOLDER'], filename)
+                file.save(file_path)
+                
+                # Extraire les informations JSON
+                longitude = request.form.get('longitude')
+                latitude = request.form.get('latitude')
+                # Créer une nouvelle entrée pour le modèle Waste
+                new_waste = Waste(
+                    image_waste=filename,  # Stocker seulement le nom du fichier
+                    longitude=longitude,
+                    latitude=latitude,
+                    id_user=user_id
+                )
+                db.session.add(new_waste)
+                db.session.commit()
 
-            # Notify responsible users
-            notification = WasteNotification(
-                description="New waste image posted",
-                id_waste=new_waste.id_waste
-            )
-            db.session.add(notification)
-            db.session.commit()
+                # Notifier les utilisateurs responsables
+                notification = WasteNotification(
+                    description="New waste image posted",
+                    id_waste=new_waste.id_waste
+                )
+                db.session.add(notification)
+                db.session.commit()
 
-            return {'message': 'Waste image posted and notification sent'}, 201
+                return {'message': 'Waste image posted and notification sent'}, 201
+            else:
+                return {'error': 'File type not allowed'}, 400
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
