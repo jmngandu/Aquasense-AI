@@ -3,6 +3,7 @@ from flask import request, current_app
 from config.extensions import db
 from models.wastewatershortage import *
 from models.notifications import *
+from models.dashboard import Subscription
 from models.user import Responsible, User
 from utils.helpers import token_required,allowed_file, token_responsible_required
 from werkzeug.utils import secure_filename
@@ -158,6 +159,9 @@ class LeaderboardResponsibles(Resource):
                 # Convert responsible to dict and add check_count
                 responsible_dict = responsible.to_dict()
                 responsible_dict['check_count'] = check_count
+                subscription = Subscription.query.get(responsible_dict['id_subscription'])
+                responsible_dict['subscription'] = subscription.to_dict()
+                responsible_dict.pop('id_subscription')
                 response_data.append(responsible_dict)
             
             return response_data, 200
