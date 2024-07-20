@@ -53,12 +53,6 @@ body {
 .linked {
   text-decoration: none;
   color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-.sign-icon {
-  padding-right: 1rem;
 }
 /*DASHBOARD PAGE*/
 .dashboardPage {
