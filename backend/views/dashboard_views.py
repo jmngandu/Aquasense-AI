@@ -83,7 +83,6 @@ class SuperAdminProfileView(Resource):
             return {'error': 'External error'}, 400
 
 class SubscriptionList(Resource):
-    @token_superadmin_required
     def get(self):
         try:
             subscriptions = Subscription.query.all()

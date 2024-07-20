@@ -1,5 +1,18 @@
 from config.extensions import db
 from datetime import datetime
+
+waste_checkers = db.Table('waste_checkers',
+    db.Column('id', db.Integer, autoincrement=True, primary_key=True),
+    db.Column('waste_id', db.Integer, db.ForeignKey('waste.id_waste'), primary_key=True),
+    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_user'), primary_key=True)
+)
+
+water_shortage_checkers = db.Table('water_shortage_checkers',
+    db.Column('id', db.Integer, autoincrement=True, primary_key=True),
+    db.Column('water_shortage_id', db.Integer, db.ForeignKey('water_shortage.id_water_shortage'), primary_key=True),
+    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_user'), primary_key=True)
+)
+
 class LocationBase(db.Model):
     __abstract__ = True
     longitude = db.Column(db.Float, nullable=False)

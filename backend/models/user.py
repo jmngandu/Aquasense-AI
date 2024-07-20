@@ -28,7 +28,7 @@ class Responsible(User):
     activity_type = db.Column(db.String(100), nullable=False)
     activity_domain = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, default='')
-    last_subscription = db.Column(db.DateTime, nullable=True)
+    last_subscription = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'responsible',
