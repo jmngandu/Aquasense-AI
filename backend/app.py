@@ -19,6 +19,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 app.config['PROFILE_FOLDER'] = os.path.join(app.config['UPLOAD_FOLDER'], 'profiles')
+app.config['WASTE_FOLDER'] = os.path.join(app.config['UPLOAD_FOLDER'], 'images/waste')
 os.makedirs(app.config['PROFILE_FOLDER'], exist_ok=True)
 
 db.init_app(app)

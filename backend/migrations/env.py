@@ -1,6 +1,10 @@
 import logging
 from logging.config import fileConfig
 
+from models.dashboard import *
+from models.user import *
+from models.wastewatershortage import *
+from models.notifications import *
 from flask import current_app
 
 from alembic import context
