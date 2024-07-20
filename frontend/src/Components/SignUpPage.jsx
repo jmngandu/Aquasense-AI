@@ -1,6 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 export default function SignUpPage() {
+  const iconStyle = {
+    color: "blue",
+  };
   return (
     <>
       <div className="sign-up">
