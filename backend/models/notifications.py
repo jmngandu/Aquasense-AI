@@ -1,32 +1,19 @@
 from config.extensions import db
 from datetime import datetime
 
-# Association table for receivers in WasteNotification
 waste_notification_receivers = db.Table('waste_notification_receivers',
     db.Column('id', db.Integer, autoincrement=True, primary_key=True),
     db.Column('waste_notification_id', db.Integer, db.ForeignKey('waste_notification.id_notification')),
-    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_responsible'))
-)
-
-# Association table for views in WasteNotification
-waste_notification_views = db.Table('waste_notification_views',
-    db.Column('id', db.Integer, autoincrement=True, primary_key=True),
-    db.Column('waste_notification_id', db.Integer, db.ForeignKey('waste_notification.id_notification')),
-    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_responsible'))
+    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_responsible')),
+    db.Column('has_seen', db.Boolean, default=False)
 )
 
 # Association table for receivers in WaterShortageNotification
 water_shortage_notification_receivers = db.Table('water_shortage_notification_receivers',
     db.Column('id', db.Integer, autoincrement=True, primary_key=True),
     db.Column('water_shortage_notification_id', db.Integer, db.ForeignKey('water_shortage_notification.id_notification')),
-    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_responsible'))
-)
-
-# Association table for views in WaterShortageNotification
-water_shortage_notification_views = db.Table('water_shortage_notification_views',
-    db.Column('id', db.Integer, autoincrement=True, primary_key=True),
-    db.Column('water_shortage_notification_id', db.Integer, db.ForeignKey('water_shortage_notification.id_notification')),
-    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_responsible'))
+    db.Column('responsible_id', db.Integer, db.ForeignKey('responsible.id_responsible')),
+    db.Column('has_seen', db.Boolean, default=False)
 )
 
 
@@ -39,7 +26,24 @@ class Notification(db.Model):
 class WasteNotification(Notification):
     __tablename__ = 'waste_notification'
     id_waste = db.Column(db.Integer, db.ForeignKey('waste.id_waste'))
+    
+    def to_dict(self):
+        return {
+            'id_notification': self.id_notification,
+            'description': self.description,
+            'created_at': self.created_at,
+            'id_waste': self.id_waste
+        }
 
 class WaterShortageNotification(Notification):
     __tablename__ = 'water_shortage_notification'
     id_water_shortage = db.Column(db.Integer, db.ForeignKey('water_shortage.id_water_shortage'))
+    
+    def to_dict(self):
+        return {
+            'id_notification': self.id_notification,
+            'description': self.description,
+            'created_at': self.created_at,
+            'id_water_shortage': self.id_water_shortage
+        }
+

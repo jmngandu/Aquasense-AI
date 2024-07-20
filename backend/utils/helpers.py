@@ -76,7 +76,6 @@ def token_responsible_required(f):
     def decorator(*args, **kwargs):
         token = request.headers.get('Authorization')
         token = token.replace('Bearer ', '')
-        print(token)
         if not token:
             return jsonify({'error': 'Token is missing'}), 401
         

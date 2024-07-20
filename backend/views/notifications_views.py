@@ -2,85 +2,47 @@ from flask_restful import Resource
 from flask import request, jsonify
 from config.extensions import db
 from models.notifications import *
-from models.user import User
-from utils.helpers import token_required
+from utils.helpers import token_responsible_required
 
-class ListReceivedNotifications(Resource):
-    @token_required
+class ListUnreadNotifications(Resource):
+    @token_responsible_required
     def get(self):
         try:
-            user_id = request.user_info['user_id']
-            
-            # Fetch notifications received by the responsible user
-            waste_notifications = db.session.query(WasteNotification).join(
-                waste_notification_receivers
-            ).filter(waste_notification_receivers.c.responsible_id == user_id).all()
-            
-            water_shortage_notifications = db.session.query(WaterShortageNotification).join(
-                water_shortage_notification_receivers
-            ).filter(water_shortage_notification_receivers.c.responsible_id == user_id).all()
-
-            # Format the response
-            response = {
-                "waste_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in waste_notifications
-                ],
-                "water_shortage_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in water_shortage_notifications
-                ]
-            }
-
-            return jsonify(response), 200
+            responsible_id = request.user_info['user_id']
+            unread_notifications = WasteNotification.query.join(waste_notification_receivers).filter(
+                waste_notification_receivers.c.responsible_id == responsible_id,
+                waste_notification_receivers.c.has_seen == False
+            ).all()
+            return {
+                'message': 'Fetched unread notifications',
+                'notifications': [notification.to_dict() for notification in unread_notifications]
+            }, 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
 
-class ListUnreadNotifications(Resource):
-    @token_required
+class ListReceivedNotifications(Resource):
+    @token_responsible_required
     def get(self):
         try:
-            user_id = request.user_info['user_id']
-            
-            # Fetch notifications that are not viewed by the responsible user
-            waste_notifications = db.session.query(WasteNotification).join(
-                waste_notification_views
-            ).filter(waste_notification_views.c.responsible_id == user_id).filter(
-                waste_notification_views.c.views == 0
-            ).all()
-            
-            water_shortage_notifications = db.session.query(WaterShortageNotification).join(
-                water_shortage_notification_views
-            ).filter(water_shortage_notification_views.c.responsible_id == user_id).filter(
-                water_shortage_notification_views.c.views == 0
+            responsible_id = request.user_info['user_id']
+            notifications = db.session.query(
+                WasteNotification,
+                waste_notification_receivers.c.has_seen
+            ).join(waste_notification_receivers).filter(
+                waste_notification_receivers.c.responsible_id == responsible_id
             ).all()
 
-            # Format the response
-            response = {
-                "waste_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in waste_notifications
-                ],
-                "water_shortage_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in water_shortage_notifications
-                ]
-            }
+            response_data = []
+            for notification, has_seen in notifications:
+                notification_dict = notification.to_dict()
+                notification_dict['has_seen'] = has_seen
+                response_data.append(notification_dict)
 
-            return jsonify(response), 200
+            return {
+                'message': 'Fetched all received notifications',
+                'notifications': response_data
+            }, 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400

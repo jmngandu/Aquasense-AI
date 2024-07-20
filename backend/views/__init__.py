@@ -23,15 +23,16 @@ def route_dashboard(api):
 def route_waste_and_water_shortage(api):
     api.add_resource(PostWasteImage, '/api/waste/post_image', endpoint='post_waste_image')  # POST
     api.add_resource(ListReceivedNotifications, '/api/notifications/received', endpoint='list_received_notifications')  # GET
-    api.add_resource(ListUnreadNotifications, '/api/notifications/unread', endpoint='list_unread_notifications')  #   # GET
+    api.add_resource(ListUnreadNotifications, '/api/notifications/unread', endpoint='list_unread_notifications')  # GET
     api.add_resource(ListUncheckedWaste, '/api/waste/unchecked', endpoint='list_unchecked_waste')  # GET
-    api.add_resource(WasteDetails, '/api/waste/details/<int:waste_id>', endpoint='waste_details')  # GET
-    api.add_resource(CheckWasteAction, '/api/waste/check/<int:waste_id>', endpoint='check_waste_action')  # PUT
+    api.add_resource(WasteDetails, '/api/waste/<int:waste_id>', endpoint='waste_details')  # GET
+    api.add_resource(CheckWasteAction, '/api/waste/<int:waste_id>/check', endpoint='check_waste_action')  # PUT
     api.add_resource(ListWaterShortages, '/api/water_shortages', endpoint='list_water_shortages')  # GET
-    api.add_resource(WaterShortageDetails, '/api/water_shortage/details/<int:water_shortage_id>', endpoint='water_shortage_details')  # GET
-    api.add_resource(LeaderboardResponsibles, '/api/leaderboard/active_responsibles', endpoint='leaderboard_active_responsibles')  # GET
-    api.add_resource(ActivateResponsibleAccount, '/api/responsible/activate/<int:responsible_id>', endpoint='activate_responsible_account')  # PUT
-    api.add_resource(LeaderboardUsers, '/api/leaderboard/active_users', endpoint='leaderboard_active_users')  # GET
+    api.add_resource(WaterShortageDetails, '/api/water_shortages/<int:water_shortage_id>', endpoint='water_shortage_details')  # GET
+    api.add_resource(LeaderboardResponsibles, '/api/responsibles/leaderboard', endpoint='leaderboard_responsibles')  # GET
+    api.add_resource(ActivateResponsibleAccount, '/api/responsible/<int:responsible_id>/activate', endpoint='activate_responsible_account')  # PUT
+    api.add_resource(LeaderboardUsers, '/api/users/leaderboard', endpoint='leaderboard_users')  # GET
+    api.add_resource(MarkNotificationAsSeen, '/api/notifications/<int:notification_id>/seen', endpoint='mark_notification_as_seen')  # PUT '/api/leaderboard/active_users', endpoint='leaderboard_active_users')  # GET
 
 
 def initialize_views(api):
