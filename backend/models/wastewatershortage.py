@@ -25,6 +25,15 @@ class Waste(LocationBase):
     image_waste = db.Column(db.String(255))
     is_checked = db.Column(db.Boolean, default=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'))
+    
+    def to_dict(self):
+        return {
+            'id_waste': self.id_waste,
+            'image_waste': self.image_waste,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'latitude': self.latitude,
+            'longitude': self.longitude
+        }
 
 class WaterShortage(LocationBase):
     __tablename__ = 'water_shortage'
@@ -33,3 +42,14 @@ class WaterShortage(LocationBase):
     quality = db.Column(db.String(50))
     quantity = db.Column(db.Float)
     last_alert = db.Column(db.DateTime, nullable=True)
+    
+    def to_dict(self):
+        return {
+            'id_water_shortage': self.id_water_shortage,
+            'flow_rate': self.flow_rate,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'quality':self.quality,
+            'quantity': self.quantity
+        }

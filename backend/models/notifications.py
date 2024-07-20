@@ -31,7 +31,7 @@ class WasteNotification(Notification):
         return {
             'id_notification': self.id_notification,
             'description': self.description,
-            'created_at': self.created_at,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'id_waste': self.id_waste
         }
 

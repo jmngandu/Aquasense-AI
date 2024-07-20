@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request, jsonify
 from config.extensions import db
 from models.notifications import *
+from models.wastewatershortage import Waste
 from utils.helpers import token_responsible_required
 
 class ListUnreadNotifications(Resource):
@@ -13,10 +14,18 @@ class ListUnreadNotifications(Resource):
                 waste_notification_receivers.c.responsible_id == responsible_id,
                 waste_notification_receivers.c.has_seen == False
             ).all()
-            return {
-                'message': 'Fetched unread notifications',
-                'notifications': [notification.to_dict() for notification in unread_notifications]
-            }, 200
+            notiications = []
+            for notification in unread_notifications:
+                notification_dict = notification.to_dict()
+                if notification_dict.get('id_waste'):
+                    waste = Waste.query.get(notification_dict['id_waste'])
+                    if waste:
+                        notification_dict['waste'] = waste.to_dict()
+                    else:
+                        notification_dict['waste'] = None
+                notification_dict.pop('id_waste', None)
+                notiications.append(notification_dict)
+            return notiications, 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
@@ -32,17 +41,21 @@ class ListReceivedNotifications(Resource):
             ).join(waste_notification_receivers).filter(
                 waste_notification_receivers.c.responsible_id == responsible_id
             ).all()
-
             response_data = []
             for notification, has_seen in notifications:
                 notification_dict = notification.to_dict()
+                notification_dict['created_at'] = notification_dict['created_at'].strftime('%Y-%m-%d %H:%M:%S')
                 notification_dict['has_seen'] = has_seen
+                if notification_dict.get('id_waste'):
+                    waste = Waste.query.get(notification_dict['id_waste'])
+                    if waste:
+                        notification_dict['waste'] = waste.to_dict()
+                    else:
+                        notification_dict['waste'] = None
+                
+                notification_dict.pop('id_waste', None)
                 response_data.append(notification_dict)
-
-            return {
-                'message': 'Fetched all received notifications',
-                'notifications': response_data
-            }, 200
+            return response_data, 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400

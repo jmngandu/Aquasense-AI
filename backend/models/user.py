@@ -19,6 +19,16 @@ class UserTemplate(db.Model):
 class User(UserTemplate):
     id_user = db.Column(db.Integer, primary_key=True, autoincrement=True)
     score = db.Column(db.Integer, default=0)
+    
+    def to_dict(self):
+        return {
+            'id_user': self.id_user,
+            'score': self.score,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'username': self.username,
+            'profile': self.profile,
+            'email':self.email
+        }
 
 class Responsible(UserTemplate):
     __tablename__ = 'responsible'
@@ -34,4 +44,15 @@ class Responsible(UserTemplate):
         'polymorphic_identity': 'responsible',
     }
     
-    
+    def to_dict(self):
+        return {
+            'id_responsible': self.id_responsible,
+            'is_activated': self.is_activated,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'username': self.username,
+            'profile': self.profile,
+            'email':self.email,
+            'activity_type': self.activity_type,
+            'activity_domain':self.activity_domain,
+            'id_subscription': self.id_subscription
+        }

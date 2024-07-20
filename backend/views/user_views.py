@@ -173,27 +173,7 @@ class LoginResponsible(Resource):
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
-        
-class LeaderboardResponsibles(Resource):
-    @token_required
-    def get(self):
-        try:
-            # Logic to fetch a leaderboard of the most active responsibles
-            return {'message': 'Fetched active responsibles leaderboard'}, 200
-        except Exception as e:
-            print(e)
-            return {'error': 'External error'}, 400
-
-class LeaderboardUsers(Resource):
-    @token_required
-    def get(self):
-        try:
-            # Logic to fetch a leaderboard of the most active users
-            return {'message': 'Fetched active users leaderboard'}, 200
-        except Exception as e:
-            print(e)
-            return {'error': 'External error'}, 400
-        
+                
 class ActivateResponsibleAccount(Resource):
     def put(self, responsible_id):
         try:

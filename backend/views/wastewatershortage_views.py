@@ -63,43 +63,54 @@ class PostWasteImage(Resource):
             return {'error': 'External error'}, 400
 
 class ListUncheckedWaste(Resource):
-    @token_required
+    @token_responsible_required
     def get(self):
         try:
             unchecked_waste = Waste.query.filter_by(is_checked=False).all()
-            return {
-                'message': 'Fetched unchecked waste',
-                'wastes': [waste.to_dict() for waste in unchecked_waste]
-            }, 200
+            return [waste.to_dict() for waste in unchecked_waste], 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
 
 class WasteDetails(Resource):
-    @token_required
+    @token_responsible_required
     def get(self, waste_id):
         try:
             waste = Waste.query.get(waste_id)
             if not waste:
                 return {'error': 'Waste not found'}, 404
-            return {
-                'message': 'Fetched waste details',
-                'waste': waste.to_dict()
-            }, 200
+            return waste.to_dict(), 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
 
 class CheckWasteAction(Resource):
-    @token_required
+    @token_responsible_required
     def put(self, waste_id):
         try:
+            id_responsible = request.user_info['user_id']
             waste = Waste.query.get(waste_id)
             if not waste:
                 return {'error': 'Waste not found'}, 404
+
+            # Check if the waste is already checked
+            if waste.is_checked:
+                return {'error': 'Waste already checked'}, 400
+            
+            # Update the waste status
             waste.is_checked = True
             db.session.commit()
-            return {'message': 'Waste checked'}, 200
+            print('waste is checked.....')
+
+            # Add the record to waste_checkers
+            check_record = waste_checkers.insert().values(
+                waste_id=waste_id,
+                responsible_id=id_responsible
+            )
+            db.session.execute(check_record)
+            db.session.commit()
+
+            return {'message': 'Waste checked and responsible added to checkers'}, 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
@@ -133,14 +144,23 @@ class WaterShortageDetails(Resource):
             return {'error': 'External error'}, 400
 
 class LeaderboardResponsibles(Resource):
-    @token_required
+    @token_responsible_required
     def get(self):
         try:
+            # Query to get all responsibles ordered by last_subscription
             responsibles = Responsible.query.order_by(Responsible.last_subscription.desc()).all()
-            return {
-                'message': 'Fetched leaderboard of active responsibles',
-                'responsibles': [responsible.to_dict() for responsible in responsibles]
-            }, 200
+            
+            response_data = []
+            for responsible in responsibles:
+                # Count the number of checks associated with this responsible
+                check_count = db.session.query(waste_checkers).filter_by(responsible_id=responsible.id_responsible).count()
+                
+                # Convert responsible to dict and add check_count
+                responsible_dict = responsible.to_dict()
+                responsible_dict['check_count'] = check_count
+                response_data.append(responsible_dict)
+            
+            return response_data, 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
