@@ -19,7 +19,7 @@ body {
   height: 40px;
   border-radius: 28px;
   text-align: center;
-  overflow: hidden;
+  outline: none;
 }
 
 .input-title {
@@ -32,6 +32,15 @@ body {
   border-radius: 0.5rem;
   border: none;
   font-weight: bold;
+  background-color: lightblue;
+}
+.log-btn:hover {
+  text-decoration: none;
+  opacity: 0.5;
+}
+.linked {
+  text-decoration: none;
+  color: #000;
 }
 /*DASHBOARD PAGE*/
 .dashboardPage {
