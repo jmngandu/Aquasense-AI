@@ -49,3 +49,17 @@ body {
   height: 90vh;
   background-color: #fff;
 }
+.log-out {
+  border-radius: 0.5rem;
+  padding: 0.5rem 2rem;
+  border: none;
+  background-color: lightblue;
+}
+.log-out:hover {
+  background-color: lightsalmon;
+}
+#log-out {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+}

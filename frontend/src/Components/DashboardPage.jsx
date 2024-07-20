@@ -11,8 +11,8 @@ export default function DashboardPage() {
             <h3>Water Analytics</h3>
           </div>
           <div className="botton-nav">
-            <button>
-              <Link to="/" className="log-out">
+            <button className="log-out">
+              <Link to="/" id="log-out">
                 LOG OUT
               </Link>
             </button>
