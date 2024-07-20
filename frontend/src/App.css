@@ -8,22 +8,34 @@ body {
   justify-content: center;
 }
 /*login page*/
-.form-section {
+#log-logo {
+  width: 10rem;
+  margin-bottom: -1rem;
+}
+#log-title {
+  margin-top: -1rem;
+}
+.LoginPage {
   background-color: #fff;
-  width: 1000px;
-  height: 512px;
-  border-radius: 59px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form-section {
+  text-align: left;
+
+  padding: 0rem 1rem;
 }
 .input {
-  width: 400px;
-  height: 40px;
+  width: 300px;
+  height: 30px;
   border-radius: 28px;
   text-align: center;
   outline: none;
 }
 
 .input-title {
-  padding-top: 1rem;
   color: black;
 }
 .log-btn {
@@ -45,6 +57,9 @@ body {
 /*DASHBOARD PAGE*/
 .dashboardPage {
   display: flex;
+}
+#dashlogo {
+  width: 60px;
 }
 .nav-dash {
   display: flex;
@@ -71,4 +86,14 @@ body {
   text-decoration: none;
   font-weight: bold;
   color: #000;
+}
+/*Sign up page*/
+.sign-up {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 2rem;
+  width: 400px;
 }

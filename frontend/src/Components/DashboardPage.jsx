@@ -6,6 +6,7 @@ export default function DashboardPage() {
       <div className="dashboardPage">
         <div className="nav-dash">
           <div className="top-nav">
+            <img src="src/assets/dashlogo.png" id="dashlogo" />
             <h1>AQUASENSE AI</h1>
             <h3>
               <Link>Waste locations</Link>

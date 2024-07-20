@@ -4,7 +4,8 @@ export default function LoginPage() {
   return (
     <>
       <div className="LoginPage">
-        <h1>AQUASENSE AI</h1>
+        <img src="src/assets/logo.png" id="log-logo" />
+        <h1 id="log-title">AQUASENSE AI</h1>
         <form className="form-section">
           <div className="email-sect group-log">
             <h3 className="input-title">Email</h3>
@@ -33,7 +34,11 @@ export default function LoginPage() {
                 Login
               </Link>
             </button>
-            <button className="log-btn">Register</button>
+            <button className="log-btn">
+              <Link to="/SignUp" className="linked">
+                Register
+              </Link>
+            </button>
           </div>
         </form>
       </div>
