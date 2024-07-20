@@ -48,6 +48,7 @@ def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = request.headers.get('Authorization')
+        token = token.replace('Bearer ', '')
         if not token:
             return jsonify({'error': 'Token is missing'}), 401
         
@@ -71,6 +72,7 @@ def token_superadmin_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = request.headers.get('Authorization')
+        token = token.replace('Bearer ', '')
         if not token:
             return jsonify({'error': 'Token is missing'}), 401
         
@@ -82,12 +84,12 @@ def token_superadmin_required(f):
         if not superadmin:
             return jsonify({'error': 'User not found'}), 401
         
-        if payload['user_id'] and payload['is_simple_user']==False and payload['is_superuser']==True:
-            return jsonify({'erreur':'Super admin privilège is required'}), 401
+        if not payload.get('is_superuser', False):
+            return jsonify({'error': 'Super admin privilege is required'}), 401
         
         request.user_info = {
-            "user_id":payload['user_id'],
-            "is_simple_user":payload['is_simple_user']
+            "user_id": payload['user_id'],
+            "is_superuser": payload['is_superuser']
         }
         return f(*args, **kwargs)
     

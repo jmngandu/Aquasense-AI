@@ -7,7 +7,6 @@ DEFAULT_PROFILE_IMAGE = 'default_profile.jpg'
 
 class UserTemplate(db.Model):
     __abstract__ = True
-    id_user = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     profile = db.Column(db.String(255), default=f'{PROFILE_FOLDER}/{DEFAULT_PROFILE_IMAGE}')
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -18,6 +17,7 @@ class UserTemplate(db.Model):
         return f'<User {self.username}>'
 
 class User(UserTemplate):
+    id_user = db.Column(db.Integer, primary_key=True, autoincrement=True)
     score = db.Column(db.Integer, default=0)
 
 class Responsible(User):

@@ -35,7 +35,7 @@ class SuperAdminLogin(Resource):
             
             superadmin = SuperAdmin.query.filter_by(email=data['email']).first()
             if superadmin and verify_password(data['password'], superadmin.password_hash):
-                token = generate_admin_token(superadmin.id_user)
+                token = generate_admin_token(superadmin.id_superadmin)
                 return {'message': 'Login successful', 'token': token}, 200
             return {'message': 'Invalid credentials'}, 401
         except Exception as e:
@@ -44,12 +44,13 @@ class SuperAdminLogin(Resource):
 
 class SuperAdminProfileView(Resource):
     @token_superadmin_required
-    def get(self, admin_id):
+    def get(self):
         try:
+            admin_id = request.user_info['user_id']
             super_admin = SuperAdmin.query.get(admin_id)
             if super_admin:
                 return {
-                    'id_user': super_admin.id_user,
+                    'id_superadmin': super_admin.id_superadmin,
                     'username': super_admin.username,
                     'email': super_admin.email,
                     'profile': super_admin.profile,
@@ -61,8 +62,9 @@ class SuperAdminProfileView(Resource):
             return {'error': 'External error'}, 400
 
     @token_superadmin_required
-    def put(self, admin_id):
+    def put(self):
         try:
+            admin_id = request.user_info['user_id']
             super_admin = SuperAdmin.query.get(admin_id)
             if not super_admin:
                 return {'message': 'SuperAdmin not found'}, 404
@@ -93,7 +95,7 @@ class SubscriptionList(Resource):
 class NewSubscription(Resource):
     @token_superadmin_required
     def post(self):
-        #request.data = ['name', 'version','description','amount', 'validity']
+        #request.data = ['name', 'version','description','amount', 'validity_in_month']
         try:
             data = request.get_json()
             new_subscription = Subscription(
@@ -101,7 +103,7 @@ class NewSubscription(Resource):
                 name=data.get('name'),
                 description=data.get('description'),
                 amount=data.get('amount'),
-                validity=data.get('validity')
+                validity_in_month=data.get('validity_in_month')
             )
             db.session.add(new_subscription)
             db.session.commit()
@@ -134,7 +136,7 @@ class SubscriptionDetail(Resource):
             subscription.name = data.get('name', subscription.name)
             subscription.description = data.get('description', subscription.description)
             subscription.amount = data.get('amount', subscription.amount)
-            subscription.validity = data.get('validity', subscription.validity)
+            subscription.validity_in_month = data.get('validity_in_month', subscription.validity_in_month)
             db.session.commit()
             return {'message': 'Subscription updated successfully'}, 200
         except Exception as e:
