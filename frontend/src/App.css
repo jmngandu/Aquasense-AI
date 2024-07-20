@@ -87,6 +87,13 @@ body {
   font-weight: bold;
   color: #000;
 }
+.dashlink {
+  color: #fff;
+  text-decoration: none;
+}
+.dashlink:hover {
+  opacity: 0.5;
+}
 /*Sign up page*/
 .sign-up {
   background-color: #fff;

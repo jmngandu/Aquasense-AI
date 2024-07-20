@@ -9,10 +9,14 @@ export default function DashboardPage() {
             <img src="src/assets/dashlogo.png" id="dashlogo" />
             <h1>AQUASENSE AI</h1>
             <h3>
-              <Link to="/DisplayWastes">Waste locations</Link>
+              <Link to="/DisplayWastes" className="dashlink">
+                Waste locations
+              </Link>
             </h3>
             <h3>
-              <Link to="/WaterAnalytics">Water Analytics</Link>
+              <Link to="/WaterAnalytics" className="dashlink">
+                Water Analytics
+              </Link>
             </h3>
           </div>
           <div className="botton-nav">
