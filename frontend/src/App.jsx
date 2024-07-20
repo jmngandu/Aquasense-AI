@@ -1,13 +1,16 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import LoginPage from "./Components/LoginPage";
+import DashboardPage from "./Components/DashboardPage";
 
 function App() {
   return (
     <>
-      <LoginPage />
+      <Routes>
+        <Route path="" element={<LoginPage />} />
+        <Route path="/Dashboard" element={<DashboardPage />} />
+      </Routes>
     </>
   );
 }

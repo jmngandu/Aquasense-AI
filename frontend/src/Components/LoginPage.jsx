@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 export default function LoginPage() {
   return (
     <>
@@ -29,7 +29,9 @@ export default function LoginPage() {
 
           <div className="register-input">
             <button id="login-btn" className="log-btn">
-              Login
+              <Link to="/Dashboard" className="linked">
+                Login
+              </Link>
             </button>
             <button className="log-btn">Register</button>
           </div>
