@@ -96,6 +96,23 @@ def token_responsible_required(f):
     
     return decorator
 
+def token_responsible_or_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        try:
+            # Try to validate with @token_responsible_required
+            token_responsible_required(lambda: None)(*args, **kwargs)
+            return f(*args, **kwargs)
+        except Exception as e:
+            # If @token_responsible_required fails, try @token_required
+            try:
+                token_required(lambda: None)(*args, **kwargs)
+                return f(*args, **kwargs)
+            except Exception as e:
+                # If both fail, return an unauthorized response
+                return jsonify({'error': 'Unauthorized access'}), 401
+    return decorated_function
+
 def token_superadmin_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):

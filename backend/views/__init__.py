@@ -1,7 +1,7 @@
 from views.user_views import *
 from views.dashboard_views import *
-from views.wastewatershortage_views import *
 from views.notifications_views import *
+from views.wastewatershortage_views import *
 
 def route_users(api):
     api.add_resource(Register, '/api/users', endpoint='register')  # POST only
@@ -26,12 +26,12 @@ def route_waste_and_water_shortage(api):
     api.add_resource(ListUnreadNotifications, '/api/notifications/unread', endpoint='list_unread_notifications')  #   # GET
     api.add_resource(ListUncheckedWaste, '/api/waste/unchecked', endpoint='list_unchecked_waste')  # GET
     api.add_resource(WasteDetails, '/api/waste/details/<int:waste_id>', endpoint='waste_details')  # GET
-    api.add_resource(CheckWasteAction, '/api/waste/check/<int:waste_id>', endpoint='check_waste_action')  # PUT
+    api.add_resource(CheckWasteAction, '/api/waste/<int:waste_id>/check', endpoint='check_waste_action')  # PUT
     api.add_resource(ListWaterShortages, '/api/water_shortages', endpoint='list_water_shortages')  # GET
     api.add_resource(WaterShortageDetails, '/api/water_shortage/details/<int:water_shortage_id>', endpoint='water_shortage_details')  # GET
-    api.add_resource(LeaderboardResponsibles, '/api/leaderboard/active_responsibles', endpoint='leaderboard_active_responsibles')  # GET
+    api.add_resource(LeaderboardResponsibles, '/api/responsibles/leaderboard', endpoint='leaderboard_active_responsibles')  # GET
     api.add_resource(ActivateResponsibleAccount, '/api/responsible/activate/<int:responsible_id>', endpoint='activate_responsible_account')  # PUT
-    api.add_resource(LeaderboardUsers, '/api/leaderboard/active_users', endpoint='leaderboard_active_users')  # GET
+    api.add_resource(LeaderboardUsers, '/api/users/leaderboard', endpoint='leaderboard_active_users')  # GET
 
 
 def initialize_views(api):

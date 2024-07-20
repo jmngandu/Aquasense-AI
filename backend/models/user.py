@@ -16,9 +16,25 @@ class UserTemplate(db.Model):
     def __repr__(self):
         return f'<User {self.username}>'
 
+    def to_dict(self):
+        return {
+            'username': self.username,
+            'profile': self.profile,
+            'email': self.email,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
 class User(UserTemplate):
     id_user = db.Column(db.Integer, primary_key=True, autoincrement=True)
     score = db.Column(db.Integer, default=0)
+
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            'id_user': self.id_user,
+            'score': self.score
+        })
+        return data
 
 class Responsible(UserTemplate):
     __tablename__ = 'responsible'
@@ -33,5 +49,16 @@ class Responsible(UserTemplate):
     __mapper_args__ = {
         'polymorphic_identity': 'responsible',
     }
-    
-    
+
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            'id_responsible': self.id_responsible,
+            'id_subscription': self.id_subscription,
+            'is_activated': self.is_activated,
+            'activity_type': self.activity_type,
+            'activity_domain': self.activity_domain,
+            'description': self.description,
+            'last_subscription': self.last_subscription.strftime('%Y-%m-%d %H:%M:%S')
+        })
+        return data

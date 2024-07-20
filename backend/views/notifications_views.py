@@ -2,85 +2,54 @@ from flask_restful import Resource
 from flask import request, jsonify
 from config.extensions import db
 from models.notifications import *
+from models.wastewatershortage import Waste
 from models.user import User
-from utils.helpers import token_required
+from utils.helpers import token_responsible_required
 
 class ListReceivedNotifications(Resource):
-    @token_required
+    @token_responsible_required
     def get(self):
         try:
-            user_id = request.user_info['user_id']
+            responsible_id = request.user_info['user_id']
+            notifications = db.session.query(
+                WasteNotification,
+                waste_notification_receivers.c.has_seen
+            ).join(waste_notification_receivers).filter(
+                waste_notification_receivers.c.responsible_id == responsible_id
+            ).all()
             
-            # Fetch notifications received by the responsible user
-            waste_notifications = db.session.query(WasteNotification).join(
-                waste_notification_receivers
-            ).filter(waste_notification_receivers.c.responsible_id == user_id).all()
+            response_data = []
+            for notification, has_seen in notifications:
+                notification_dict = notification.to_dict()
+                notification_dict['has_seen'] = has_seen
+                
+                # Fetch the associated Waste object
+                if notification_dict.get('id_waste'):
+                    waste = Waste.query.get(notification_dict['id_waste'])
+                    if waste:
+                        notification_dict['waste'] = waste.to_dict()
+                    else:
+                        notification_dict['waste'] = None
+                
+                # Remove id_waste and add the waste details
+                notification_dict.pop('id_waste', None)
+                response_data.append(notification_dict)
             
-            water_shortage_notifications = db.session.query(WaterShortageNotification).join(
-                water_shortage_notification_receivers
-            ).filter(water_shortage_notification_receivers.c.responsible_id == user_id).all()
-
-            # Format the response
-            response = {
-                "waste_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in waste_notifications
-                ],
-                "water_shortage_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in water_shortage_notifications
-                ]
-            }
-
-            return jsonify(response), 200
+            return response_data, 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
 
 class ListUnreadNotifications(Resource):
-    @token_required
+    @token_responsible_required
     def get(self):
         try:
-            user_id = request.user_info['user_id']
-            
-            # Fetch notifications that are not viewed by the responsible user
-            waste_notifications = db.session.query(WasteNotification).join(
-                waste_notification_views
-            ).filter(waste_notification_views.c.responsible_id == user_id).filter(
-                waste_notification_views.c.views == 0
+            responsible_id = request.user_info['user_id']
+            unread_notifications = WasteNotification.query.join(waste_notification_receivers).filter(
+                waste_notification_receivers.c.responsible_id == responsible_id,
+                waste_notification_receivers.c.has_seen == False
             ).all()
-            
-            water_shortage_notifications = db.session.query(WaterShortageNotification).join(
-                water_shortage_notification_views
-            ).filter(water_shortage_notification_views.c.responsible_id == user_id).filter(
-                water_shortage_notification_views.c.views == 0
-            ).all()
-
-            # Format the response
-            response = {
-                "waste_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in waste_notifications
-                ],
-                "water_shortage_notification_list": [
-                    {
-                        "id_notification": n.id_notification,
-                        "description": n.description,
-                        "created_at": n.created_at
-                    } for n in water_shortage_notifications
-                ]
-            }
-
-            return jsonify(response), 200
+            return [notification.to_dict() for notification in unread_notifications], 200
         except Exception as e:
             print(e)
             return {'error': 'External error'}, 400
