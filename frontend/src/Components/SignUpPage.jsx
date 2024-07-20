@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
 export default function SignUpPage() {
   return (
     <>
@@ -12,12 +14,14 @@ export default function SignUpPage() {
         <div className="botton-sign">
           <p id="google-sign" className="log-btn">
             <Link to="/Dashboard" className="linked">
+              <FontAwesomeIcon icon={faGoogle} className="sign-icon" />
               Continue with google
             </Link>
           </p>
           <p>Or</p>
           <p id="facebook-sign" className="log-btn">
             <Link to="/Dashboard" className="linked">
+              <FontAwesomeIcon icon={faFacebook} className="sign-icon" />
               Continue with facebook
             </Link>
           </p>
