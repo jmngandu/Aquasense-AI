@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Mail
+Flask-Migrate
+Flask-RESTful
+Flask-CORS
+Pillow
+mysqlclient
+python-dotenv
+werkzeug
