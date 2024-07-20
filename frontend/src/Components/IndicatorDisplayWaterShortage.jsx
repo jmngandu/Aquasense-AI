@@ -6,7 +6,9 @@ export default function IndicatorDisplayWaterShortage() {
       <div className="dashboardPage">
         <div className="nav-dash">
           <div className="top-nav">
-            <img src="src/assets/dashlogo.png" id="dashlogo" />
+            <Link to="/Dashboard">
+              <img src="src/assets/dashlogo.png" id="dashlogo" />
+            </Link>
             <h1>AQUASENSE AI</h1>
             <h3>
               <Link to="/DisplayWastes" className="dashlink">
