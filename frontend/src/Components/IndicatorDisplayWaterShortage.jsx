@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import MarketMap from "../map/MarketMap";
 export default function IndicatorDisplayWaterShortage() {
   return (
     <>

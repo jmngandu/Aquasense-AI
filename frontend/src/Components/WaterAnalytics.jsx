@@ -1,3 +1,6 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import MarketMap from "../map/MarketMap";
 export default function WaterAnalytics() {
   return (
     <>
