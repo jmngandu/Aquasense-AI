@@ -1,6 +1,33 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  /* max-width: 1280px; */
   padding: 2rem;
   text-align: center;
+}
+body {
+  display: flex;
+  justify-content: center;
+}
+.form-section {
+  background-color: #fff;
+  width: 1000px;
+  height: 512px;
+  border-radius: 59px;
+}
+.input {
+  width: 400px;
+  height: 40px;
+  border-radius: 28px;
+  text-align: center;
+}
+
+.input-title {
+  padding-top: 1rem;
+  color: black;
+}
+.log-btn {
+  margin: 1rem 2rem;
+  padding: 0.5rem 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: bold;
 }
