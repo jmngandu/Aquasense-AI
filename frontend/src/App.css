@@ -63,7 +63,7 @@ body {
 }
 .fas {
   width: 30px;
-  padding-right: 1rem;
+  padding-right: 2rem;
 }
 .nav-dash {
   display: flex;
@@ -96,7 +96,7 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
 }
 .dashlink:hover {
   opacity: 0.5;
