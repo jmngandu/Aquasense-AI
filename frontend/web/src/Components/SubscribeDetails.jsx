@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function SubscribeDetails() {
   return (
     <>
@@ -11,16 +12,42 @@ export default function SubscribeDetails() {
         </div>
         <div className="botton-sub-panel">
           <div className="left-sub-page sub-pages">
-            <h3>individuals</h3>
-            <h1>
-              $0<small className="small">/month</small>
-            </h1>
+            <div className="upper-sub-sect">
+              <h3>Free tier</h3>
+              <h1>
+                $0<small className="small">/month</small>
+              </h1>
+              <ul>
+                <li>Acces to user waste locations</li>
+              </ul>
+            </div>
+            <div className="lower-sub-sect">
+              <button className="sub-btns">
+                <Link to="/Subscription" id="subscribe-btn sub-btn">
+                  Subscribe
+                </Link>
+              </button>
+            </div>
           </div>
           <div className="right-sub-page sub-pages">
-            <h3>companies</h3>
-            <h1>
-              $100<small className="small">/month</small>
-            </h1>
+            <div className="upper-sub-sect">
+              <h3>Monthly Subscription</h3>
+              <h1>
+                $100<small className="small">/month</small>
+              </h1>
+              <ul>
+                <li>Acces to user waste locations</li>
+                <li>Access to AI insights on waste locations</li>
+                <li>Access to AI powered water analytics</li>
+              </ul>
+            </div>
+            <div className="lower-sub-sect">
+              <button className="sub-btns">
+                <Link to="/Subscription" id="currentp-btn sub-btn">
+                  Current Plan
+                </Link>
+              </button>
+            </div>
           </div>
         </div>
       </div>
