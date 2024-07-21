@@ -2,6 +2,7 @@ from flask_mail import Message
 from flask import current_app
 import datetime
 
+
 def send_waste_email(mail_receiver, name_receiver, link, button_content_link):
     mail = current_app.extensions['mail']
     subject = "Nouvelle publication de déchet"
