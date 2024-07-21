@@ -38,6 +38,6 @@ def list_routes():
 
 
 if __name__ == '__main__':
-    host = os.getenv('HOST')
+    host = os.getenv('HOST','192.168.210.66')
     port = int(os.getenv('PORT'))
     app.run(host=host, port=port, debug=True)
