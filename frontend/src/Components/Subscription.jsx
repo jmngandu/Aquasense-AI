@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import MarketMap from "../map/MarketMap";
 import "@fortawesome/fontawesome-free/css/all.css";
+import SubscribeDetails from "./SubscribeDetails";
 export default function Subscription() {
   return (
     <>
@@ -30,7 +31,7 @@ export default function Subscription() {
           </button>
         </div>
         <div className="map-dash">
-          <MarketMap />
+          <SubscribeDetails />
         </div>
       </div>
     </>

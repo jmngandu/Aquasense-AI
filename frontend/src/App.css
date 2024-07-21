@@ -118,3 +118,37 @@ body {
   align-items: center;
   /* justify-content: space-around; */
 }
+/*subscribe details*/
+.subscription-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+}
+.top-sub-panel {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.sub-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  margin: 1rem;
+}
+.sub-btn:hover {
+  color: #fff;
+  background-color: #000;
+}
+.botton-sub-panel {
+  display: flex;
+  justify-content: space-around;
+}
+.sub-pages {
+  width: 300px;
+  height: 400px;
+  background-color: cadetblue;
+  border-radius: 1rem;
+}
