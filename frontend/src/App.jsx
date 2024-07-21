@@ -7,6 +7,8 @@ import SignUpPage from "./Components/SignUpPage";
 import IndicatorDisplayWastes from "./Components/IndicatorDisplayWastes";
 import IndicatorDisplayWaterShortage from "./Components/IndicatorDisplayWaterShortage";
 import WaterAnalytics from "./Components/WaterAnalytics";
+import Subscription from "./Components/Subscription";
+import { NotFound } from "./Components/NotFound";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/SignUp" element={<SignUpPage />} />
         <Route path="/DisplayWastes" element={<IndicatorDisplayWastes />} />
         <Route path="/WaterAnalytics" element={<WaterAnalytics />} />
+        <Route path="/Subscription" element={<Subscription />} />
+        <Route path="*" element={<NotFound />} />
         <Route
           path="/WaterShortages"
           element={<IndicatorDisplayWaterShortage />}

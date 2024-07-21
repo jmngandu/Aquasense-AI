@@ -79,7 +79,7 @@ body {
 }
 .log-out {
   border-radius: 0.5rem;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 1rem;
   border: none;
   background-color: lightblue;
 }
@@ -101,6 +101,7 @@ body {
 .dashlink:hover {
   opacity: 0.5;
 }
+
 /*Sign up page*/
 .sign-up {
   background-color: #fff;
@@ -110,4 +111,10 @@ body {
   flex-direction: column;
   border-radius: 2rem;
   width: 400px;
+}
+/*Account*/
+.account-info {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
 }
