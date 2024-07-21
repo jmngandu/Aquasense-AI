@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function SubscribeDetails() {
+  const subscribe = () => toast("Subscribed!");
+  const currentp = () => toast("More features added!");
+
   return (
     <>
       <div className="subscription-page">
@@ -22,11 +28,12 @@ export default function SubscribeDetails() {
               </ul>
             </div>
             <div className="lower-sub-sect">
-              <button className="sub-btns">
+              <button onClick={subscribe} className="sub-btns">
                 <Link to="/Subscription" id="subscribe-btn sub-btn">
                   Subscribe
                 </Link>
               </button>
+              <ToastContainer />
             </div>
           </div>
           <div className="right-sub-page sub-pages">
@@ -42,11 +49,12 @@ export default function SubscribeDetails() {
               </ul>
             </div>
             <div className="lower-sub-sect">
-              <button className="sub-btns">
+              <button onClick={currentp} className="sub-btns">
                 <Link to="/Subscription" id="currentp-btn sub-btn">
                   Current Plan
                 </Link>
               </button>
+              <ToastContainer />
             </div>
           </div>
         </div>
