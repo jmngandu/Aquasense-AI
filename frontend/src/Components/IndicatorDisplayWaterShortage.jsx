@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import MarketMap from "../map/MarketMap";
+import "@fortawesome/fontawesome-free/css/all.css";
 export default function IndicatorDisplayWaterShortage() {
   return (
     <>
@@ -12,12 +13,12 @@ export default function IndicatorDisplayWaterShortage() {
             <h1>AQUASENSE AI</h1>
             <h3>
               <Link to="/DisplayWastes" className="dashlink">
-                Waste locations
+                <i className="fas fa-map-marker-alt fa-2x"></i> Waste locations
               </Link>
             </h3>
             <h3>
               <Link to="/WaterAnalytics" className="dashlink">
-                Water Analytics
+                <i className="fas fa-chart-line fa-2x"></i> Water Analytics
               </Link>
             </h3>
           </div>

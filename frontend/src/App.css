@@ -61,6 +61,10 @@ body {
 #dashlogo {
   width: 60px;
 }
+.fas {
+  width: 30px;
+  padding-right: 1rem;
+}
 .nav-dash {
   display: flex;
   flex-direction: column;
@@ -90,6 +94,9 @@ body {
 .dashlink {
   color: #fff;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .dashlink:hover {
   opacity: 0.5;
