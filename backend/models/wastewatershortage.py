@@ -55,3 +55,76 @@ class WaterShortage(LocationBase):
             'last_alert': self.last_alert.strftime('%Y-%m-%d %H:%M:%S'),
             'created_at':self.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }
+        
+class IoTDevice(LocationBase):
+    __tablename__ = 'iot_device'
+    id_device = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'))
+
+    def to_dict(self):
+        return {
+            'id_device': self.id_device,
+            'id_user': self.id_user,
+            'longitude': self.longitude,
+            'latitude': self.latitude
+        }
+
+class WaterData(db.Model):
+    __tablename__ = 'water_data'
+    id_water_data = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_device = db.Column(db.Integer, db.ForeignKey('iot_device.id_device'))
+    flow_rate = db.Column(db.Float)
+    water_level = db.Column(db.Float)
+    pump_status = db.Column(db.String(50))  # e.g., Operational, Not Operational
+    quantity = db.Column(db.Float)
+    rainfall = db.Column(db.Float)
+    temperature = db.Column(db.Float)
+    humidity = db.Column(db.Float)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'id_water_data': self.id_water_data,
+            'id_device': self.id_device,
+            'flow_rate': self.flow_rate,
+            'water_level': self.water_level,
+            'pump_status': self.pump_status,
+            'quantity': self.quantity,
+            'rainfall': self.rainfall,
+            'temperature': self.temperature,
+            'humidity': self.humidity,
+            'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+class WaterQuality(db.Model):
+    __tablename__ = 'water_quality'
+    id_water_quality = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_device = db.Column(db.Integer, db.ForeignKey('iot_device.id_device'))
+    ph = db.Column(db.Float)
+    hardness = db.Column(db.Float)
+    solids = db.Column(db.Float)
+    chloramines = db.Column(db.Float)
+    sulfate = db.Column(db.Float)
+    conductivity = db.Column(db.Float)
+    organic_carbon = db.Column(db.Float)
+    trihalomethanes = db.Column(db.Float)
+    turbidity = db.Column(db.Float)
+    potability = db.Column(db.Integer, default=0)  # 0 for non-potable, 1 for potable
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'id_water_quality': self.id_water_quality,
+            'ph': self.ph,
+            'hardness': self.hardness,
+            'solids': self.solids,
+            'chloramines': self.chloramines,
+            'sulfate': self.sulfate,
+            'conductivity': self.conductivity,
+            'organic_carbon': self.organic_carbon,
+            'trihalomethanes': self.trihalomethanes,
+            'turbidity': self.turbidity,
+            'potability': self.potability,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'id_device': self.id_device
+        }

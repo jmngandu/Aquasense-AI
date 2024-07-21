@@ -14,3 +14,11 @@ def configure_app(app):
     app.config['WASTE_FOLDER'] = os.path.join(app.config['UPLOAD_FOLDER'], 'images/waste')
     os.makedirs(app.config['PROFILE_FOLDER'], exist_ok=True)
     os.makedirs(app.config['WASTE_FOLDER'], exist_ok=True)
+    
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USERNAME'] = os.getenv('MAIL_USER')
+    app.config['MAIL_PASSWORD'] = os.getenv('PASSWORD_MAIL')
+    app.config['MAIL_USE_TLS'] = False
+    app.config['MAIL_USE_SSL'] = True
+    app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USER')
