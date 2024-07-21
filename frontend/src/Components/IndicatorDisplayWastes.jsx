@@ -17,8 +17,8 @@ export default function IndicatorDisplayWastes() {
               </Link>
             </h3>
             <h3>
-              <Link to="/WaterAnalytics" className="dashlink">
-                <i className="fas fa-chart-line fa-2x"></i>Water Analytics
+              <Link to="/Dashboard" className="dashlink">
+                <i className="fas fa-tachometer-alt fa-2x"></i>Dashboard
               </Link>
             </h3>
           </div>

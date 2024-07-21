@@ -13,13 +13,13 @@ export default function WaterAnalytics() {
             </Link>
             <h1>AQUASENSE AI</h1>
             <h3>
-              <Link to="/DisplayWastes" className="dashlink">
-                <i className="fas fa-map-marker-alt fa-2x"></i>Waste locations
-              </Link>
-            </h3>
-            <h3>
               <Link to="/WaterAnalytics" className="dashlink">
                 <i className="fas fa-chart-line fa-2x"></i> Water Analytics
+              </Link>
+            </h3>{" "}
+            <h3>
+              <Link to="/Dashboard" className="dashlink">
+                <i className="fas fa-tachometer-alt fa-2x"></i>Dashboard
               </Link>
             </h3>
           </div>
