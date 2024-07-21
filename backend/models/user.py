@@ -11,6 +11,7 @@ class UserTemplate(db.Model):
     profile = db.Column(db.String(255), default=f'{PROFILE_FOLDER}/{DEFAULT_PROFILE_IMAGE}')
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
+    sexe = db.Column(db.String(50),nullable=False,default='Unkouwn')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -21,6 +22,7 @@ class UserTemplate(db.Model):
             'username': self.username,
             'profile': self.profile,
             'email': self.email,
+            'sexe':self.sexe,
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }
 

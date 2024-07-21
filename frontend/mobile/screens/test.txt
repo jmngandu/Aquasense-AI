@@ -1,0 +1,369 @@
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, FlatList, TextInput, ActivityIndicator} from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+
+
+const Publication = ({ title, imageSource, views, likes, shares }) => {
+  return (
+    <View style={styles.publicationContainer}>
+      <Image
+        source={imageSource}
+        style={styles.image}
+      />
+      <Text style={styles.title}>{title}</Text>
+      <View style={styles.reactionContainer}>
+        <TouchableOpacity style={styles.reactionButton}>
+          <Ionicons name="eye" size={24} color="black" />
+          <Text>{views}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.reactionButton}>
+          <Ionicons name="heart" size={24} color="red" />
+          <Text>{likes}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.reactionButton}>
+          <Ionicons name="share" size={24} color="blue" />
+          <Text>{shares}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+function HomeScreen() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
+        <Ionicons name={isMenuOpen ? 'close' : 'menu'} size={24} color="black" />
+      </TouchableOpacity>
+      {isMenuOpen && (
+        <View style={styles.menu}>
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="settings" size={24} color="black" />
+            <Text style={styles.menuText}>Paramètres</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="search" size={24} color="black" />
+            <Text style={styles.menuText}>Recherche</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      <ScrollView contentContainerStyle={styles.publicationContainer}>
+        <Publication
+          title="Titre de la publication 1"
+          imageSource={require('../assets/hero1.jpg')}
+          views={100}
+          likes={50}
+          shares={20}
+        />
+        <Publication
+          title="Titre de la publication 2"
+          imageSource={require('../assets/hero2.jpg')}
+          views={200}
+          likes={80}
+          shares={30}
+        />
+        <Publication
+          title="Titre de la publication 3"
+          imageSource={require('../assets/hero3.jpg')}
+          views={100}
+          likes={20}
+          shares={10}
+        />
+        {/* Ajoutez d'autres publications ici */}
+      </ScrollView>
+    </View>
+  );
+}
+const MessageItem = ({ message, isSender }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
+
+  const handleDelete = () => {
+    setIsDeleteVisible(true); // Afficher le bouton de suppression
+  };
+
+  const confirmDelete = () => {
+    setIsDeleting(true); // Afficher le loader
+    // Ici, vous pouvez appeler votre logique de suppression de message
+    setTimeout(() => {
+      // Simulation de la suppression du message
+      setIsDeleting(false); // Cacher le loader
+      setIsDeleteVisible(false); // Cacher le bouton de suppression après la suppression
+    }, 2000); // Temps de simulation de la suppression
+  };
+
+  return (
+    <View style={[styles.messageItem, isSender ? styles.senderMessage : styles.receiverMessage]}>
+      <Image source={isSender ? require('../assets/hero1.jpg') : require('../assets/hero2.jpg')} style={styles.profileImage} />
+      <Text style={styles.messageText}>{message}</Text>
+      {isDeleteVisible && (
+        <View style={styles.deleteContainer}>
+          {isDeleting ? (
+            <ActivityIndicator size="small" color="#FF084B" />
+          ) : (
+            <>
+              <TouchableOpacity onPress={confirmDelete}>
+                <Ionicons name="trash" size={24} color="#FF084B" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setIsDeleteVisible(false)}>
+                <Ionicons name="close" size={24} color="black" />
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      )}
+      {!isDeleteVisible && (
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+          <Ionicons name="trash" size={24} color="#FF084B" />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+}
+
+const DiscussionScreen = () => {
+  const [messages, setMessages] = useState([
+    { id: 1, text: "Salut !", isSender: true },
+    { id: 2, text: "Bonjour, comment ça va ?", isSender: false },
+    { id: 3, text: "Très bien merci ! Et toi ?", isSender: true }
+  ]);
+
+  const deleteMessage = (id) => {
+    setMessages(messages.filter(message => message.id !== id));
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={messages}
+        renderItem={({ item }) => (
+          <MessageItem
+            message={item.text}
+            isSender={item.isSender}
+            onDelete={() => deleteMessage(item.id)} // Passer la fonction de suppression
+          />
+        )}
+        keyExtractor={item => item.id.toString()}
+        contentContainerStyle={styles.messagesContainer}
+        inverted
+      />
+    </View>
+  );
+  const [newMessage, setNewMessage] = useState('');
+
+  const sendMessage = () => {
+    if (newMessage.trim() !== '') {
+      setMessages([...messages, newMessage]);
+      setNewMessage('');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={messages}
+        renderItem={({ item }) => <MessageItem message={item} />}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.messagesContainer}
+        inverted
+      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Saisissez votre message..."
+          value={newMessage}
+          onChangeText={text => setNewMessage(text)}
+        />
+        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+          <Ionicons name="send" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+function SearchScreen() {
+  return (
+    <View style={styles.container}>
+      <Text>Search Screen</Text>
+    </View>
+  );
+}
+
+function ShareScreen() {
+  return (
+    <View style={styles.container}>
+      <Text>Share Screen</Text>
+    </View>
+  );
+}
+
+function ProfileScreen() {
+  return (
+    <View style={styles.container}>
+      <Text>Profile Screen</Text>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+export default function App() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Discussion') {
+            iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
+          } else if (route.name === 'Search') {
+            iconName = focused ? 'search' : 'search-outline';
+          } else if (route.name === 'Share') {
+            iconName = focused ? 'share' : 'share-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person' : 'person-outline';
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: '#FF084B',
+        inactiveTintColor: 'gray',
+      }}>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Discussion" component={DiscussionScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen name="Share" component={ShareScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  menuButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
+  },
+  menu: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    zIndex: 1,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  menuText: {
+    marginLeft: 10,
+  },
+  publicationContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  publicationContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+  },
+  image: {
+    width: 300,
+    height: 200,
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  reactionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginTop: 10,
+  },
+  reactionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  messagesContainer: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+  },
+  messageItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0F0F0',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+    maxWidth: '70%',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#CCCCCC',
+    padding: 10,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#CCCCCC',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    marginRight: 10,
+    padding : 10,
+  },
+  sendButton: {
+    backgroundColor: '#007AFF',
+    borderRadius: 20,
+    padding: 10,
+  },
+  senderMessage: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#DCF8C5',
+  },
+  receiverMessage: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#F0F0F0',
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  messageText: {
+    fontSize: 16,
+  },
+  deleteButton: {
+    marginLeft: 10,
+  },
+  deleteContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 'auto',
+  },
+});

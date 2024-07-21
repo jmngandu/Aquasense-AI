@@ -8,6 +8,7 @@ from utils.helpers import (hash_password , verify_password, generate_token, toke
 
 class Register(Resource):
     def post(self):
+        #request.data = ['username','email','password','sexe']
         try:
             data = request.get_json()
             if any(attr not in data for attr in ['username', 'email', 'password']):
@@ -18,7 +19,8 @@ class Register(Resource):
             new_user = User(
                 username=data['username'],
                 email=data['email'],
-                password_hash=hashed_password
+                password_hash=hashed_password,
+                sexe=data.get('sexe','Unkown')
             )
             db.session.add(new_user)
             db.session.commit()
