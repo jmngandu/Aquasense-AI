@@ -152,3 +152,7 @@ body {
   background-color: cadetblue;
   border-radius: 1rem;
 }
+.small {
+  font-weight: normal;
+  font-size: smaller;
+}

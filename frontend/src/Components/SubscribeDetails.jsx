@@ -11,10 +11,16 @@ export default function SubscribeDetails() {
         </div>
         <div className="botton-sub-panel">
           <div className="left-sub-page sub-pages">
-            <h1>individuals</h1>
+            <h3>individuals</h3>
+            <h1>
+              $0<small className="small">/month</small>
+            </h1>
           </div>
           <div className="right-sub-page sub-pages">
-            <h1>companies</h1>
+            <h3>companies</h3>
+            <h1>
+              $100<small className="small">/month</small>
+            </h1>
           </div>
         </div>
       </div>
