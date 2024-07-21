@@ -13,19 +13,19 @@ export default function Subscription() {
             </Link>
             <h1>AQUASENSE AI</h1>
             <h3>
-              <Link to="/DisplayWastes" className="dashlink">
-                <i className="fas fa-map-marker-alt fa-2x"></i>Waste locations
+              <Link to="/Subscription" className="dashlink">
+                <i className="fas fa-handshake fa-2x"></i>Subscription
               </Link>
             </h3>
             <h3>
-              <Link to="/WaterAnalytics" className="dashlink">
-                <i className="fas fa-chart-line fa-2x"></i> Water Analytics
+              <Link to="/Dashboard" className="dashlink">
+                <i className="fas fa-tachometer-alt fa-2x"></i>Dashboard
               </Link>
             </h3>
           </div>
           <button className="log-out">
-            <Link to="/WaterShortages" id="log-out">
-              Indicator Display Water Shortage
+            <Link to="/" id="log-out">
+              LOG OUT
             </Link>
           </button>
         </div>
