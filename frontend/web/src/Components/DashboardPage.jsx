@@ -2,6 +2,7 @@ import MarketMap from "../map/MarketMap";
 import { Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.css";
 import Account from "./Account";
+import logo from "../assets/logo.png";
 export default function DashboardPage() {
   return (
     <>
@@ -9,7 +10,7 @@ export default function DashboardPage() {
         <div className="nav-dash">
           <div className="top-nav">
             <Link to="/Dashboard">
-              <img src="src/assets/dashlogo.png" id="dashlogo" />
+              <img src={logo} id="dashlogo" />
             </Link>
             <h1>AQUASENSE AI</h1>
 

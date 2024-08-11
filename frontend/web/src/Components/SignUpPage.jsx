@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../assets/logo.png";
 export default function SignUpPage() {
   const iconStyle = {
     color: "blue",
@@ -9,7 +9,7 @@ export default function SignUpPage() {
     <>
       <div className="sign-up">
         <div className="top-sign">
-          <img src="src/assets/logo.png" id="log-logo" />
+          <img src={logo} id="log-logo" />
           <h1 id="log-title">AQUASENSE AI</h1>
         </div>
 
