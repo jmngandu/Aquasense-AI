@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import MarketMap from "../map/MarketMap";
 import "@fortawesome/fontawesome-free/css/all.css";
+import logo from "../assets/logo.png";
 export default function WaterAnalytics() {
   return (
     <>
@@ -9,7 +10,7 @@ export default function WaterAnalytics() {
         <div className="nav-dash">
           <div className="top-nav">
             <Link to="/Dashboard">
-              <img src="src/assets/dashlogo.png" id="dashlogo" />
+              <img src={logo} id="dashlogo" />
             </Link>
             <h1>AQUASENSE AI</h1>
             <h3>
