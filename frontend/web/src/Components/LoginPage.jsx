@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 export default function LoginPage() {
   return (
     <>
       <div className="LoginPage">
-        <img src="src/assets/logo.png" id="log-logo" />
+        <img src={logo} id="log-logo" />
         <h1 id="log-title">AQUASENSE AI</h1>
         <form className="form-section">
           <div className="email-sect group-log">
@@ -34,6 +35,7 @@ export default function LoginPage() {
                 Login
               </Link>
             </button>
+
             <button className="log-btn">
               <Link to="/SignUp" className="linked">
                 Register

@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function SubscribeDetails() {
   const subscribe = () => toast("Subscribed!");
+
   const currentp = () => toast("More features added!");
 
   return (
@@ -13,6 +14,7 @@ export default function SubscribeDetails() {
           <h2>Subscription</h2>
           <div className="sub-nav">
             <button className="sub-btn">For individuals</button>
+
             <button className="sub-btn">For companies</button>
           </div>
         </div>
